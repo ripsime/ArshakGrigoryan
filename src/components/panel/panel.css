@@ -1,0 +1,24 @@
+.panel {
+    width: 250px;
+    min-width: 250px;
+    height: calc(100vh - 60px);
+    padding: 20px;
+    background-color: #333333;
+    color: #ffffff;
+}
+.burger, .panel li {
+    padding: 10px;
+}
+.panel li i {
+    margin-right: 15px;
+}
+ul {
+    padding: 0;
+    margin: 0;
+}
+li {
+    list-style-type: none;
+}
+i, i + span {
+    color: rgb(213, 213, 213);
+}
