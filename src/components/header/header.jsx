@@ -4,7 +4,7 @@ import './header.css';
 const Header = () => {
     return (
         <div className="header">
-            <div>INTERNET OF THINGS</div>
+            <h1>INTERNET OF THINGS</h1>
         </div>
     )
 }

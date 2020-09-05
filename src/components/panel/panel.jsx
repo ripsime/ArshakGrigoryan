@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 
 import './panel.css';
 
-
 export default class Panel extends Component{
     
     state = {
         items: [
-            { classes: "fas fa-home", text: 'Home', title: false },
-            { classes: "fas fa-tachometer-alt", text: 'Dashboard', title: false }
+            { classes: "fas fa-home", text: 'Home', href: 'home', title: false },
+            { classes: "fas fa-tachometer-alt", text: 'Dashboard', href: 'dashboard', title: false }
         ],
         panelMinimize: false
     }
@@ -21,14 +20,13 @@ export default class Panel extends Component{
         })
     }
 
-
     onMouseHover = (clazzez, title) => {
         const newItems = []
-        this.state.items.forEach(({classes, text}, idx) => {
+        this.state.items.forEach(({classes, text, href}, idx) => {
             if(classes === clazzez) {
-                newItems[idx] = { classes, text, title: title }
+                newItems[idx] = { classes, text, href, title: title }
             } else {
-                newItems[idx] = { classes, text, title: false }
+                newItems[idx] = { classes, text, href, title: false }
             }
         })
         return {
@@ -58,11 +56,13 @@ export default class Panel extends Component{
         const { panelMinimize, items } = this.state
         
         const classNames = panelMinimize ? 'panel-def panel-minimize' : 'panel-def panel'
-        const listItems = items.map(({classes, text, title}) => {
+        const listItems = items.map(({classes, text, href, title}) => {
             return (
-                <li key={text}>
-                    <i className={classes} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></i>
-                    { panelMinimize ? null : <span>{text}</span> }
+                <li key={text} >
+                    <a href={href}>
+                        <i className={classes} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></i>
+                        { panelMinimize ? null : <span>{text}</span> }                        
+                    </a>
                     { title ? <div className='title'>{text}</div> : null }
                 </li>
             )

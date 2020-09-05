@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
 }
-.header > div {
+.header > h1 {
     padding: 20px;
     font-size: 20px;
     color: white;

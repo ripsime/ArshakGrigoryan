@@ -7,11 +7,11 @@
 }
 .panel-def {
     height: calc(100vh - 60px);
-    padding: 10px;
     background-color: #333333;
     color: #ffffff;
 }
 .burger {
+    padding: 12px 12px 6px;
     cursor: pointer;    
 }
 .burger > i{
@@ -31,6 +31,7 @@ ul {
     margin: 0;
 }
 li {
+    padding: 6px 12px;
     position: relative;
     list-style-type: none;
     cursor: pointer;
@@ -39,11 +40,11 @@ li .title{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: calc(100% + 10px + 10px);
+    left: calc(100% + 12px);
     padding: 5px;
     background-color: #333333;
     border-radius: 3px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 300;
     box-shadow: 0px 4px 4px rgba(51, 51, 51, .4);
 }
@@ -59,8 +60,14 @@ li .title::before{
 }
 i, i + span {
     color: rgb(213, 213, 213);
+    font-size: 18px;
+}
+i + span {
     font-size: 16px;
 }
 i + span{
     font-weight: normal;
+}
+a {
+    text-decoration: none;
 }
