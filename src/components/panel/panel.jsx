@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-
-import './panel.css';
+import { Link } from 'react-router-dom'
+import './panel.less';
 
 export default class Panel extends Component{
     
     state = {
         items: [
-            { classes: "fas fa-home", text: 'Home', href: 'home', title: false },
-            { classes: "fas fa-tachometer-alt", text: 'Dashboard', href: 'dashboard', title: false }
+            { iconClass: "fas fa-home", text: 'Home', href: 'home', tooltip: false },
+            { iconClass: "fas fa-tachometer-alt", text: 'Dashboard', href: 'dashboard', tooltip: false }
         ],
         panelMinimize: false
     }
@@ -20,13 +20,13 @@ export default class Panel extends Component{
         })
     }
 
-    onMouseHover = (clazzez, title) => {
+    toggleTooltip = (clazzez, tooltip) => {
         const newItems = []
-        this.state.items.forEach(({classes, text, href}, idx) => {
-            if(classes === clazzez) {
-                newItems[idx] = { classes, text, href, title: title }
+        this.state.items.forEach(({iconClass, text, href}, idx) => {
+            if(clazzez.includes(text)) {
+                newItems[idx] = { iconClass, text, href, tooltip: tooltip }
             } else {
-                newItems[idx] = { classes, text, href, title: false }
+                newItems[idx] = { iconClass, text, href, tooltip: false }
             }
         })
         return {
@@ -35,10 +35,11 @@ export default class Panel extends Component{
     }
 
     onMouseOver = (e) => {
+        // console.log(e.target)
         if(this.state.panelMinimize) {
             const clazzez = e.target.classList.value
             this.setState(() => {
-                return this.onMouseHover(clazzez, true)
+                return this.toggleTooltip(clazzez, true)
             })
         }
     }
@@ -47,7 +48,7 @@ export default class Panel extends Component{
         if(this.state.panelMinimize) {
             const clazzez = e.target.classList.value
             this.setState(() => {
-                return this.onMouseHover(clazzez, false)
+                return this.toggleTooltip(clazzez, false)
             })
         }
     }
@@ -55,15 +56,18 @@ export default class Panel extends Component{
     render() {
         const { panelMinimize, items } = this.state
         
-        const classNames = panelMinimize ? 'panel-def panel-minimize' : 'panel-def panel'
-        const listItems = items.map(({classes, text, href, title}) => {
+        const classNames = panelMinimize ? 'panel-def panel-min' : 'panel-def panel-max'
+
+        const listItems = items.map(({iconClass, text, href, tooltip}) => {
             return (
-                <li key={text} >
-                    <a href={href}>
-                        <i className={classes} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></i>
-                        { panelMinimize ? null : <span>{text}</span> }                        
-                    </a>
-                    { title ? <div className='title'>{text}</div> : null }
+                <li key={text} className={text} 
+                    onMouseOver={this.onMouseOver} 
+                    onMouseOut={this.onMouseOut} >
+                    <Link to={href} className={text}>
+                        <i className={iconClass + ' ' + text}></i>
+                        { panelMinimize ? null : <span className={text}>{text}</span> }                        
+                    </Link>
+                    { tooltip ? <div className='tooltip'>{text}</div> : null }
                 </li>
             )
         })
