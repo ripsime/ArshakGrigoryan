@@ -6,43 +6,80 @@ import './layout.less';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 class Layout extends PureComponent {
-	state = { layout: JSON.parse(JSON.stringify(this.props.layout)) };
-
-	generateDOM = () => {
-		return _.map(_.range(this.props.items), function (i) {
-			return (
-				<div className="layout-item" key={i}>
-					<span>{i}</span>
-				</div>
-			);
-		});
+	static defaultProps = {
+		className: "layout",
+		cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+		rowHeight: 100,
 	};
 
+	state = {
+		items: this.props.layout,
+	};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (prevState.items !== nextProps.layout) {
+			return {
+				items: nextProps.layout,
+			};
+		}
+
+		return null;
+	}
+
 	onLayoutChange = (layout) => {
-		this.props.setLayout(layout);
+		// this.props.setLayout(layout);
 		this.setState({ layout });
 	};
 
+	createElement = (el) => {
+		const removeStyle = {
+			position: "absolute",
+			right: "2px",
+			top: 0,
+			cursor: "pointer",
+		};
+
+		return (
+			<div key={el._id} className="layout-item">
+				<span className="text">{el._id}</span>
+				<span
+					className="remove"
+					style={removeStyle}
+					onClick={this.onRemoveItem.bind(this, el._id)}
+				>
+					x
+				</span>
+			</div>
+		);
+	};
+
+	onBreakpointChange = (breakpoint, cols) => {
+		this.setState({
+			breakpoint: breakpoint,
+			cols: cols,
+		});
+	};
+
+	onRemoveItem = (_id) => {
+		console.log("removing", i);
+		this.setState({ items: _.reject(this.state.items, { _id }) });
+	};
+
+
 	render() {
 		return (
-			<ResponsiveGridLayout
-				layout={this.state.layout}
-				onLayoutChange={this.onLayoutChange}
-				{...this.props}
-			>
-				{this.generateDOM()}
-			</ResponsiveGridLayout>
+			<div>
+				<button onClick={this.props.addItem}>Add Item</button>
+				<ResponsiveGridLayout
+					onLayoutChange={this.onLayoutChange}
+					onBreakpointChange={this.onBreakpointChange}
+					{...this.props}
+				>
+					{_.map(this.state.items, (el) => this.createElement(el))}
+				</ResponsiveGridLayout>
+			</div>
 		);
 	}
 }
-
-Layout.defaultProps = {
-	className: "layout",
-	items: 5,
-	rowHeight: 30,
-	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-	breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
-	isResizable: true,
-};
 
 export default Layout;

@@ -6,7 +6,7 @@ import {
 const initialState = {
     layout: []
 };
-debugger
+
 function dashboard(state = initialState, action) {
     switch (action.type) {
         case GET_LAYOUT: {

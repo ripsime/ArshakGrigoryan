@@ -6,42 +6,46 @@ import Layout from '../layout/layout';
 import './dashboard.less';
 import * as dashboardActions from './dashboardActions.js';
 
+
 class Dashboard extends Component {
 	componentDidMount() {
-        axios
-        .get("http://localhost:3000/layout")
-			.then(
-				(result) => {
-                    this.props.get_layout(result)
-                    console.log(result)
-				},
-				(error) => {
-                    console.log(`get Error - ${error}`)
-				}
-			);
+		axios.get("http://localhost:3000/layout").then(
+			(result) => {
+				this.props.get_layout(result);
+				console.log(result);
+			},
+			(error) => {
+				console.log(`Error - ${error}`);
+			}
+		);
 	}
 
-    setLayout = (layout) => {
-        axios
-        .post("http://localhost:3000/layout", {
-            layout,
-        })
-        .then(
-            (result) => {
-                console.log(result)
-            },
-            (error) => {
-                console.log(`post Error - ${error}`)
-            }
-        );
-    }
+	addItem = () => {
+		axios
+			.post("http://localhost:3000/layout", {
+				layout: {
+					x: (this.props.layout.length * 2) % 12,
+					y: 100000,
+					w: 2,
+					h: 2,
+				},
+			})
+			.then(
+				(result) => {
+					console.log(result);
+				},
+				(error) => {
+					console.log(`Error - ${error}`);
+				}
+			);
+	};
+
 	render() {
 		return (
-			<Fragment>
-				<div className='dashboard'>Dashboard</div>
-				<Layout layout={this.props.layout} setLayout={this.setLayout}
-				/>
-			</Fragment>
+			<React.Fragment>
+				<div>Dashboard</div>
+				<Layout layout={this.props.layout} addItem={this.addItem} />
+			</React.Fragment>
 		);
 	}
 }

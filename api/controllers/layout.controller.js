@@ -1,9 +1,9 @@
-const DataStore = require('nedb');
+const Datastore = require("nedb");
 
-const db = {}
-db.layout = new DataStore({
-    filename: './local_storage/layout.db',
-    autoload: true,
+const db = {};
+db.layout = new Datastore({
+	filename: "./local_storage/layout.db",
+	autoload: true,
 });
 
 // Get Layout
@@ -24,13 +24,13 @@ exports.get = (req, res) => {
 	}
 };
 
-// Set Layout
-exports.set = (req, res) => {
-	console.log("Set layout");
+// Add Layout
+exports.add = (req, res) => {
+	console.log("Add layout");
 
-    const { layout } = req.body
+	const { layout } = req.body;
 
-    db.layout.update({}, {multi: true}, layout, () => {
-        console.log('updated')
-    })
+	db.layout.insert(layout, () => {
+		console.log("Added");
+	});
 };
